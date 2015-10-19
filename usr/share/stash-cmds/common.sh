@@ -23,6 +23,7 @@ done
 # Check for 0 arguments
 if [ $# -eq 0 ]; then
   echo "Usage: '${0}' path1 [path2]..."
+  exit 1
 fi
 
 # Inform the user that this might take a while
@@ -87,7 +88,6 @@ _unstash() {
           # Ensure that there is room to copy the stashed directory to the
           # destination
           if [ "${SIZE}" -lt "${FREE}" ]; then
-            echo "${SIZE} < ${FREE}"
             echo "Found stash for '${1}'; unstashing to '${ORIGINAL}' ..."
             # Remove the symlink to the stash
             rm "${ORIGINAL}" && \
