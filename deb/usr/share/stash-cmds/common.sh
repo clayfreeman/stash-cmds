@@ -39,24 +39,28 @@ _cleanup() {
 
 # Define the _stash function to handle stashing directories
 _stash() {
+  # Remove duplicate slash characters from the path
+  STASHPATH=$(echo "${1}" | tr -s /)
+  # Remove the trailing slash (if it exists)
+  STASHPATH="${STASHPATH%/}"
   # Ensure that the given argument is not already a symlink
-  if [ -h "${1}" ]; then
-    echo "Directory '${1}' is already stashed; skipping."
+  if [ -h "${STASHPATH}" ]; then
+    echo "Directory '${STASHPATH}' is already stashed; skipping."
   # If the given argument is a directory, go ahead and stash
-  elif [ -d "${1}" ]; then
-    echo "Stashing '${1}' (don't interrupt this process) ..."
-    /usr/libexec/cydia/move.sh "${1}"
+  elif [ -d "${STASHPATH}" ]; then
+    echo "Stashing '${STASHPATH}' (don't interrupt this process) ..."
+    /usr/libexec/cydia/move.sh "${STASHPATH}"
     # Perform a sanity check to determine if the directory was stashed
-    if [ -L "${1}" ] && [ -d "${1}" ]; then
-      echo "Successfully stashed '${1}'."
+    if [ -L "${STASHPATH}" ] && [ -d "${STASHPATH}" ]; then
+      echo "Successfully stashed '${STASHPATH}'."
       return 0
     # If the directory was not stashed, inform the user of impending doom
     else
-      echo "A problem occurred while stashing '${1}'."
+      echo "A problem occurred while stashing '${STASHPATH}'."
     fi
   # Refuse to stash if the provided argument is not a directory
   else
-    echo "Cannot stash '${1}'; not a directory."
+    echo "Cannot stash '${STASHPATH}'; not a directory."
   fi
   # Return a failure value by default
   return 1
@@ -65,10 +69,14 @@ _stash() {
 # Define the _unstash function to handle moving directories to their original
 # location
 _unstash() {
-  if [ -n "${1}" ]; then
+  # Remove duplicate slash characters from the path
+  STASHPATH=$(echo "${1}" | tr -s /)
+  # Remove the trailing slash (if it exists)
+  STASHPATH="${STASHPATH%/}"
+  if [ -n "${STASHPATH}" ]; then
     # Iterate over each entry in the stash directory
     for i in /var/stash/*; do
-      SOURCE="${i}/${1}"
+      SOURCE="${i}/${STASHPATH}"
       # Determine if the given argument is stashed at this location
       if [ -d "${SOURCE}" ]; then
         # Determine the original path of the stashed directory
@@ -88,7 +96,7 @@ _unstash() {
           # Ensure that there is room to copy the stashed directory to the
           # destination
           if [ "${SIZE}" -lt "${FREE}" ]; then
-            echo "Found stash for '${1}'; unstashing to '${ORIGINAL}' ..."
+            echo "Found stash '${STASHPATH}'; unstashing to '${ORIGINAL}' ..."
             # Remove the symlink to the stash
             rm "${ORIGINAL}" && \
             # Copy the stashed directory to its original location
@@ -97,7 +105,7 @@ _unstash() {
             rm -rf "${i}" && rm -f "${i}.lnk"
             return 0
           else
-            echo "Not enough free space to unstash '${1}'."
+            echo "Not enough free space to unstash '${STASHPATH}'."
             echo "Try to remove some jailbreak apps and tweaks."
           fi
         # The original path doesn't symlink to the stash location
@@ -107,7 +115,7 @@ _unstash() {
       fi
     done
   else
-    echo "Cannot unstash '${1}'; not an absolute path."
+    echo "Cannot unstash '${STASHPATH}'; not an absolute path."
   fi
   # Return a failure value by default
   return 1
