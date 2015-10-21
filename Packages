@@ -1,13 +1,13 @@
 Package: com.clayfreeman.stash-cmds
-Version: 1.0-4
+Version: 1.0-5
 Architecture: iphoneos-arm
 Maintainer: Clay Freeman <stash-cmds@clayfreeman.com>
 Depends: bash (>= 4.0), coreutils, coreutils-bin, system-cmds, uikittools
-Filename: deb/com.clayfreeman.stash-cmds_1.0-4.deb
-Size: 3338
-MD5sum: a3f4885de1da383e278e24db67ec2fc7
-SHA1: 5e0643348f3e49e2900e43342f0a1dff56ffcaf8
-SHA256: 3a0f36061b7a215fbad4a2084c94628546929534ca25f1b7f9a0974895a01b4c
+Filename: deb/com.clayfreeman.stash-cmds_1.0-5.deb
+Size: 2514
+MD5sum: 27cf9c90208fdc740f553982cd72a6d7
+SHA1: b0f4c0967e0134682f18043a2537480d865bbe13
+SHA256: f8bfcebb8556f7111f94deef6880b04de77e914fe1c4abe4438c5d3c2cc8fe2d
 Section: Administration
 Priority: optional
 Description: Resource stashing management commands
