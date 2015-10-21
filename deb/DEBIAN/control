@@ -1,9 +1,10 @@
 Architecture: iphoneos-arm
 Depends: bash (>= 4.0), coreutils, coreutils-bin, system-cmds, uikittools
+Depiction: https://clayfreeman.github.io/stash-cmds/depiction.html
 Description: Resource stashing management commands
 Maintainer: Clay Freeman <stash-cmds@clayfreeman.com>
 Name: stash-cmds
 Package: com.clayfreeman.stash-cmds
 Section: Administration
 Tag: purpose::console, role::hacker
-Version: 1.0-5
+Version: 1.0-6
